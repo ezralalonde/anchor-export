@@ -12,7 +12,7 @@ text files, either for backup, or for importing into another system.
 
 Run this bash script. It will export all `posts` and `pages` in
 your MySQL database to [Markdown](https://en.wikipedia.org/wiki/Markdown)
-files with a [TOML](hettps://github.com/toml-lang/toml) header suitable for
+files with a [TOML](https://github.com/toml-lang/toml) header suitable for
 use with
 [Phenomic](https://github.com/MoOx/phenomic),
 [Hugo](https://gohugo.io),
