@@ -54,10 +54,10 @@ Filenames are base on the `slug` of the page.
         Default: ./export
     --openshift	
         Use environment variables to set other values.
-        USER=\$OPENSHIFT_MYSQL_DB_USERNAME
-        HOST=\$OPENSHIFT_MYSQL_DB_HOST
-        POST=\$OPENSHIFT_MYSQL_DB_PORT
-        PASS=\$OPENSHIFT_MYSQL_DB_PASSWORD
+        USER=$OPENSHIFT_MYSQL_DB_USERNAME
+        HOST=$OPENSHIFT_MYSQL_DB_HOST
+        POST=$OPENSHIFT_MYSQL_DB_PORT
+        PASS=$OPENSHIFT_MYSQL_DB_PASSWORD
 
 ## Bonus
 
