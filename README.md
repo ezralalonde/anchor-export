@@ -30,7 +30,7 @@ Filenames are base on the `slug` of the page.
 
 
     Example usage:
-        anchor-export.sh --host=localhost --password=fake123 --user=ezralalonde --port=007 --output-dir=\./directory\
+        anchor-export.sh --host=localhost --password=fake123 --user=ezralalonde --port=007 --output-dir=./directory
         anchor-export.sh --openshift -o=out
     
     -h --host
