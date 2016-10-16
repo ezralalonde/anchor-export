@@ -4,8 +4,8 @@ A small utility for exporting posts and pages from AnchorCMS.
 
 ## Problem
 
-You have been using AnchorCMS with MySQL for a while, and have a
-bunch of pages and posts. You need to be able to export the data into static
+You have been using [Anchor CMS](https://anchorcms.com/) with [MySQL](http://www.mysql.com/)
+for a while, and have a bunch of pages and posts. You need to be able to export the data into static
 text files, either for backup, or for importing into another system.
 
 ## Solution
@@ -58,6 +58,10 @@ Filenames are base on the `slug` of the page.
         HOST=$OPENSHIFT_MYSQL_DB_HOST
         POST=$OPENSHIFT_MYSQL_DB_PORT
         PASS=$OPENSHIFT_MYSQL_DB_PASSWORD
+
+## Installation
+
+    wget https://raw.githubusercontent.com/ezralalonde/anchor-export/master/anchor-export.sh
 
 ## Bonus
 
