@@ -16,7 +16,7 @@ slice_pages () {
 	DIR="$DIRECTORY"/pages
 	mkdir "$DIR"
 	while IFS=$'\t' read -r id slug parent redirect title status type content
-	do           
+	do
 		FILE="$DIR"/"$slug".md
 		echo -n "Exporting $FILE... "
 		echo "---" > $FILE
@@ -28,7 +28,7 @@ slice_pages () {
 		echo -e "---\n" >> $FILE
 		clean "$content" >> $FILE
 		echo "Done."
-	done < "$1" 
+	done < "$1"
 }
 
 # anchor.anchor_pages
@@ -77,8 +77,8 @@ slice_posts () {
 	DIR="$DIRECTORY"/posts
 	mkdir "$DIR"
 	while IFS=$'\t' read -r id slug title status description category date author content
-	do           
-		FILE="$DIR"/"$slug".md
+	do
+		FILE="$DIR"/"${date%% *}-$slug".md
 		echo -n "Exporting $FILE... "
 		echo "---" > $FILE
 		echo "title : $title" >> $FILE
@@ -90,7 +90,7 @@ slice_posts () {
 		echo -e "---\n" >> $FILE
 		clean "$content" >> $FILE
 		echo "Done."
-	done < "$1" 
+	done < "$1"
 }
 
 # anchor.anchor_posts
@@ -117,15 +117,15 @@ dump_posts () {
 	echo -n "Dumping $USER@$HOST/$DATABASE.anchor_posts "
 	QUERY="
 		SELECT
-			IFNULL(ap.id, 'DEFAULT ID'),
-			IFNULL(ap.slug, 'DEFAULT SLUG'),
-			IFNULL(ap.title, 'DEFAULT TITLE'),
-			IFNULL(ap.status, 'DEFAULT STATUS'),
-			IFNULL(ap.description, 'DEFAULT DESCRIPTION'),
-			IFNULL(category.slug, 'DEFAULT CATEGORY'),
-			IFNULL(ap.created, 'DEFAULT CREATED'),
-			IFNULL(author.real_name, 'DEFAULT AUTHOR'),
-			COALESCE(ap.markdown, ap.html, 'DEFAULT CONTENT')
+			IFNULL(ap.id, 'DEFAULT_ID'),
+			IFNULL(ap.slug, 'DEFAULT_SLUG'),
+			IFNULL(ap.title, 'DEFAULT_TITLE'),
+			IFNULL(ap.status, 'DEFAULT_STATUS'),
+			IF(ap.description IS NULL OR ap.description = '', 'DEFAULT DESCRIPTION', ap.description),
+			IFNULL(category.slug, 'DEFAULT_CATEGORY'),
+			IFNULL(ap.created, 'DEFAULT_CREATED'),
+			IFNULL(author.real_name, 'DEFAULT_AUTHOR'),
+			COALESCE(ap.markdown, ap.html, 'DEFAULT_CONTENT')
 			''
 		FROM anchor_posts as ap
 		LEFT JOIN anchor_categories AS category ON ap.category = category.id
