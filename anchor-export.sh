@@ -1,9 +1,33 @@
 #! /usr/bin/sh
 
+LANG=en_CA.UTF-8
+LANGUAGE=en_CA.UTF-8
+LC_CTYPE="en_CA.UTF-8"
+LC_NUMERIC="en_CA.UTF-8"
+LC_TIME="en_CA.UTF-8"
+LC_COLLATE="en_CA.UTF-8"
+LC_MONETARY="en_CA.UTF-8"
+LC_MESSAGES="en_CA.UTF-8"
+LC_PAPER="en_CA.UTF-8"
+LC_NAME="en_CA.UTF-8"
+LC_ADDRESS="en_CA.UTF-8"
+LC_TELEPHONE="en_CA.UTF-8"
+LC_MEASUREMENT="en_CA.UTF-8"
+LC_IDENTIFICATION="en_CA.UTF-8"
+LC_ALL=en_CA.UTF-8
+
+# $1 = CONVERT FROM WINDOWS 1252 TO UTF-8
+fix () {
+	TEMP=$(mktemp)
+	iconv -f windows-1252 -t utf-8 $1 > $TEMP
+	mv $TEMP $1
+}
 
 # $1 = CONTENT TO HTML ESCAPE
 clean () {
-	echo -e "$1" | tr -d '\r' | php -r 'while(($line=fgets(STDIN)) !== FALSE) echo html_entity_decode($line, ENT_QUOTES|ENT_HTML401);'
+	echo -e "$1" |\
+	tr -d '\r' |\
+	php -r 'while(($line=fgets(STDIN)) !== FALSE) echo html_entity_decode($line, ENT_QUOTES|ENT_HTML401);'
 }
 
 # $1 = QUERY
@@ -20,13 +44,14 @@ slice_pages () {
 		FILE="$DIR"/"$slug".md
 		echo -n "Exporting $FILE... "
 		echo "---" > $FILE
-		echo "title : $title" >> $FILE
+		echo "title: $title" >> $FILE
 		echo "type: $type" >> $FILE
 		echo "status: $status" >> $FILE
 		echo "redirect: $redirect" >> $FILE
 		echo "parent: $parent" >> $FILE
 		echo -e "---\n" >> $FILE
 		clean "$content" >> $FILE
+		fix "$FILE"
 		echo "Done."
 	done < "$1"
 }
@@ -81,7 +106,7 @@ slice_posts () {
 		FILE="$DIR"/"${date%% *}-$slug".md
 		echo -n "Exporting $FILE... "
 		echo "---" > $FILE
-		echo "title : $title" >> $FILE
+		echo "title: $title" >> $FILE
 		echo "description : $description" >> $FILE
 		echo "status: $status" >> $FILE
 		echo "category: $category" >> $FILE
@@ -89,8 +114,10 @@ slice_posts () {
 		echo "date: ${date%% *}" >> $FILE
 		echo -e "---\n" >> $FILE
 		clean "$content" >> $FILE
+		fix "$FILE"
 		echo "Done."
 	done < "$1"
+
 }
 
 # anchor.anchor_posts
@@ -256,3 +283,4 @@ done
 
 setdir $DIRECTORY
 dump_all
+
