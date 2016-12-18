@@ -30,6 +30,12 @@ clean () {
 	php -r 'while(($line=fgets(STDIN)) !== FALSE) echo html_entity_decode($line, ENT_QUOTES|ENT_HTML401);'
 }
 
+# $1 = KEY
+# $2 = VALUE
+frontmatter () {
+	echo "$1: \"$2\"" | awk '$1=$1' 
+}
+
 # $1 = QUERY
 run_query () {
 	mysql --user=$USER --host=$HOST --port=$PORT --password=$PASS $BASE --batch --skip-column-names -e "$1"
@@ -44,11 +50,11 @@ slice_pages () {
 		FILE="$DIR"/"$slug".md
 		echo -n "Exporting $FILE... "
 		echo "---" > $FILE
-		echo "title: $title" >> $FILE
-		echo "type: $type" >> $FILE
-		echo "status: $status" >> $FILE
-		echo "redirect: $redirect" >> $FILE
-		echo "parent: $parent" >> $FILE
+		frontmatter "title" "$title" >> $FILE
+		frontmatter "type" "$type" >> $FILE
+		frontmatter "status" "$status"  >> $FILE
+		frontmatter "redirect" "$redirect"  >> $FILE
+		frontmatter "parent" "$parent" >> $FILE
 		echo -e "---\n" >> $FILE
 		clean "$content" >> $FILE
 		fix "$FILE"
@@ -106,12 +112,12 @@ slice_posts () {
 		FILE="$DIR"/"${date%% *}-$slug".md
 		echo -n "Exporting $FILE... "
 		echo "---" > $FILE
-		echo "title: $title" >> $FILE
-		echo "description : $description" >> $FILE
-		echo "status: $status" >> $FILE
-		echo "category: $category" >> $FILE
-		echo "author: $author" >> $FILE
-		echo "date: ${date%% *}" >> $FILE
+		frontmatter "title" "$title" >> $FILE
+		frontmatter "description" "$description" >> $FILE
+		frontmatter "status" "$status" >> $FILE
+		frontmatter "category" "$category" >> $FILE
+		frontmatter "author" "$author" >> $FILE
+		frontmatter "date" "${date%% *}" >> $FILE
 		echo -e "---\n" >> $FILE
 		clean "$content" >> $FILE
 		fix "$FILE"
